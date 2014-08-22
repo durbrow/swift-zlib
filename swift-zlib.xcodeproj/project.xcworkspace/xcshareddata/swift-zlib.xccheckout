@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>79D20A31-E41A-4D6A-AD08-394163D47425</string>
+	<key>IDESourceControlProjectName</key>
+	<string>swift-zlib</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>D5B4D67D409EB28F658E22B278F9359D3552967D</key>
+		<string>https://github.com/durbrow/swift-zlib.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>swift-zlib.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>D5B4D67D409EB28F658E22B278F9359D3552967D</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/durbrow/swift-zlib.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>D5B4D67D409EB28F658E22B278F9359D3552967D</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D5B4D67D409EB28F658E22B278F9359D3552967D</string>
+			<key>IDESourceControlWCCName</key>
+			<string>swift-zlib</string>
+		</dict>
+	</array>
+</dict>
+</plist>

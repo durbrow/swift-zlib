@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9F2E623819A806CF005F09EA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2E623719A806CF005F09EA /* main.swift */; };
+		9F61D5F019A8087300E4642D /* helper.c in Sources */ = {isa = PBXBuildFile; fileRef = 9F61D5EE19A8087300E4642D /* helper.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,9 @@
 /* Begin PBXFileReference section */
 		9F2E623419A806CF005F09EA /* swift-zlib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "swift-zlib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F2E623719A806CF005F09EA /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		9F61D5ED19A8087300E4642D /* swift-zlib-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "swift-zlib-Bridging-Header.h"; sourceTree = "<group>"; };
+		9F61D5EE19A8087300E4642D /* helper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = helper.c; sourceTree = "<group>"; };
+		9F61D5EF19A8087300E4642D /* helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = helper.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +62,9 @@
 			isa = PBXGroup;
 			children = (
 				9F2E623719A806CF005F09EA /* main.swift */,
+				9F61D5EE19A8087300E4642D /* helper.c */,
+				9F61D5EF19A8087300E4642D /* helper.h */,
+				9F61D5ED19A8087300E4642D /* swift-zlib-Bridging-Header.h */,
 			);
 			path = "swift-zlib";
 			sourceTree = "<group>";
@@ -119,6 +126,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F2E623819A806CF005F09EA /* main.swift in Sources */,
+				9F61D5F019A8087300E4642D /* helper.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,14 +211,21 @@
 		9F2E623C19A806CF005F09EA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "swift-zlib/swift-zlib-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		9F2E623D19A806CF005F09EA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "swift-zlib/swift-zlib-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -233,6 +248,7 @@
 				9F2E623D19A806CF005F09EA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
