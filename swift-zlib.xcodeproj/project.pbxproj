@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		9F2E623819A806CF005F09EA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F2E623719A806CF005F09EA /* main.swift */; };
 		9F61D5F019A8087300E4642D /* helper.c in Sources */ = {isa = PBXBuildFile; fileRef = 9F61D5EE19A8087300E4642D /* helper.c */; };
+		9F61D5F219A80A6D00E4642D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F61D5F119A80A6D00E4642D /* libz.dylib */; };
+		9F61D5F419A80E0100E4642D /* zlib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F61D5F319A80E0100E4642D /* zlib.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +31,8 @@
 		9F61D5ED19A8087300E4642D /* swift-zlib-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "swift-zlib-Bridging-Header.h"; sourceTree = "<group>"; };
 		9F61D5EE19A8087300E4642D /* helper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = helper.c; sourceTree = "<group>"; };
 		9F61D5EF19A8087300E4642D /* helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = helper.h; sourceTree = "<group>"; };
+		9F61D5F119A80A6D00E4642D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		9F61D5F319A80E0100E4642D /* zlib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = zlib.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F61D5F219A80A6D00E4642D /* libz.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,6 +50,7 @@
 		9F2E622B19A806CF005F09EA = {
 			isa = PBXGroup;
 			children = (
+				9F61D5F519A80E0E00E4642D /* External Libraries */,
 				9F2E623619A806CF005F09EA /* swift-zlib */,
 				9F2E623519A806CF005F09EA /* Products */,
 			);
@@ -65,8 +71,17 @@
 				9F61D5EE19A8087300E4642D /* helper.c */,
 				9F61D5EF19A8087300E4642D /* helper.h */,
 				9F61D5ED19A8087300E4642D /* swift-zlib-Bridging-Header.h */,
+				9F61D5F319A80E0100E4642D /* zlib.swift */,
 			);
 			path = "swift-zlib";
+			sourceTree = "<group>";
+		};
+		9F61D5F519A80E0E00E4642D /* External Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				9F61D5F119A80A6D00E4642D /* libz.dylib */,
+			);
+			name = "External Libraries";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F61D5F419A80E0100E4642D /* zlib.swift in Sources */,
 				9F2E623819A806CF005F09EA /* main.swift in Sources */,
 				9F61D5F019A8087300E4642D /* helper.c in Sources */,
 			);
