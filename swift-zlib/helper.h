@@ -7,6 +7,7 @@
 //
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <zlib.h>
 
 // inflateBack uses callbacks (c function pointers). While swift can import
@@ -20,3 +21,7 @@ typedef unsigned (^backIn_block)(unsigned char const **dataptr);
 typedef int (^backOut_block)(unsigned length, unsigned char const data[length]);
 
 int inflateBackHelper(z_streamp strm, backIn_block src, backOut_block sink);
+
+int inflateBackInitialize(z_streamp const strm, int const windowBits, void *const window);
+
+bool isGoodVersion(void);
