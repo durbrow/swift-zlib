@@ -10,9 +10,15 @@ import Swift
 
 private let MAX_WBYTES = Int(1 << MAX_WBITS)
 
+//// TODO: enum for inflate error codes
+
+// callback based inflate
 private struct InflateBack
 {
+    // this is for inflate's lookback window, it is 32K
     let window: UnsafeMutablePointer<UInt8>
+
+    // inflate's state object
     let stream: UnsafeMutablePointer<z_stream>
 
     init()
