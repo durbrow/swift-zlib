@@ -8,19 +8,30 @@
 
 #include "helper.h"
 
-static unsigned in_cb(void *restrict const ctx, unsigned char **restrict dataptr)
+// this one is called to provide data to be decompressed
+// ctx here is the pointer that was passed in as the 3rd parameter to inflateBack
+static unsigned in_cb(void *const ctx1, unsigned char **const dataptr)
 {
-    return ((backIn_block)ctx)((unsigned char const **restrict)dataptr);
+    backIn_block const src = ctx1;
+
+    return src((void *)dataptr);
 }
 
-static int out_cb(void *restrict const ctx, unsigned char *restrict data, unsigned datalen)
+// this one is called with decompressed data
+// ctx here is the pointer that was passed in as the 5th parameter to inflateBack
+static int out_cb(void *const ctx2, unsigned char *const data, unsigned const datalen)
 {
-    return ((backOut_block)ctx)(datalen, data);
+    backOut_block const sink = ctx2;
+
+    return sink(datalen, data);
 }
 
 int inflateBackHelper(z_streamp const strm,
                       backIn_block const src,
                       backOut_block const sink)
 {
-    return inflateBack(strm, in_cb, (void *)src, out_cb, (void *)sink);
+    void *const ctx1 = src;
+    void *const ctx2 = sink;
+
+    return inflateBack(strm, in_cb, ctx1, out_cb, ctx2);
 }

@@ -9,7 +9,14 @@
 #include <stdint.h>
 #include <zlib.h>
 
-// bridging callback blocks
-typedef unsigned (^backIn_block)(unsigned char const **restrict dataptr);
-typedef int (^backOut_block)(unsigned length, unsigned char *restrict data);
+// inflateBack uses callbacks (c function pointers). While swift can import
+// c function pointers it can't generate them. It can generate clang blocks
+// though. So this helper provides a pair of callbacks that call the blocks.
+
+// this one provides compressed data
+typedef unsigned (^backIn_block)(unsigned char const **dataptr);
+
+// this one receives decompressed data
+typedef int (^backOut_block)(unsigned length, unsigned char *data);
+
 int inflateBackHelper(z_streamp strm, backIn_block src, backOut_block sink);
