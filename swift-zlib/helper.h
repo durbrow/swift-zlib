@@ -17,6 +17,6 @@
 typedef unsigned (^backIn_block)(unsigned char const **dataptr);
 
 // this one receives decompressed data
-typedef int (^backOut_block)(unsigned length, unsigned char *data);
+typedef int (^backOut_block)(unsigned length, unsigned char const data[length]);
 
 int inflateBackHelper(z_streamp strm, backIn_block src, backOut_block sink);
