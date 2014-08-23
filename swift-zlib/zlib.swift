@@ -8,10 +8,7 @@
 
 import Swift
 
-private struct zlib
-{
-    static let MAX_WBYTES = Int(1 << MAX_WBITS)
-}
+private let MAX_WBYTES = Int(1 << MAX_WBITS)
 
 private struct InflateBack
 {
@@ -20,33 +17,29 @@ private struct InflateBack
 
     init()
     {
-        window = UnsafeMutablePointer<UInt8>.alloc(zlib.MAX_WBYTES)
+        window = UnsafeMutablePointer<UInt8>.alloc(MAX_WBYTES)
         stream = UnsafeMutablePointer<z_stream>.alloc(1)
-
         inflateBackInit_(stream, MAX_WBITS, window, ZLIB_VERSION, Int32(sizeof(z_stream)))
     }
+
     func destroy()
     {
-        inflateBackEnd(stream);
+        inflateBackEnd(stream)
         stream.dealloc(1)
-        window.dealloc(zlib.MAX_WBYTES)
+        window.dealloc(MAX_WBYTES)
     }
-    func inflate(source: () -> UnsafeBufferPointer<UInt8>,
-                   sink: (UnsafeBufferPointer<UInt8>) -> Int32) -> Int
+
+    func inflate(  sink: (UnsafeBufferPointer<UInt8>) -> Int32,
+                 source: () -> UnsafeBufferPointer<UInt8>) -> Int
     {
         return Int(inflateBackHelper(stream,
-            {
-                let data = source();
-                $0[0] = data.baseAddress;
-                return UInt32(data.count);
-            },
-            {
-                sink(UnsafeBufferPointer(start: $1, count: Int($0)))
-            }
+            { let data = source(); $0[0] = data.baseAddress; return UInt32(data.count) },
+            { sink(UnsafeBufferPointer(start: $1, count: Int($0))) }
         ))
     }
-    func inflate(source: UnsafeBufferPointer<UInt8>,
-                   sink: (UnsafeBufferPointer<UInt8>) -> Int32) -> Int
+    
+    func inflate(  sink: (UnsafeBufferPointer<UInt8>) -> Int32,
+                 source:  UnsafeBufferPointer<UInt8>) -> Int
     {
         return Int(
             inflateBackHelper(stream,
