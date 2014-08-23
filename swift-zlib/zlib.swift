@@ -25,10 +25,10 @@ private struct InflateBack
     {
         window = UnsafeMutablePointer<UInt8>.alloc(MAX_WBYTES)
         stream = UnsafeMutablePointer<z_stream>.alloc(1)
-        inflateBackInit_(stream, MAX_WBITS, window, ZLIB_VERSION, Int32(sizeof(z_stream)))
+        inflateBackInitialize(stream, MAX_WBITS, window);
     }
 
-    func destroy()
+    func dealloc() -> ()
     {
         inflateBackEnd(stream)
         stream.dealloc(1)
@@ -66,7 +66,7 @@ class InflateRaw
 
     deinit
     {
-        raw.destroy()
+        raw.dealloc()
     }
 
     func inflateTo(       sink: (UnsafeBufferPointer<UInt8>) -> Int32,
