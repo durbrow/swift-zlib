@@ -29,8 +29,8 @@ private struct InflateBack
         window.dealloc(MAX_WBYTES)
     }
 
-    func inflate(  sink: (UnsafeBufferPointer<UInt8>) -> Int32,
-                 source: () -> UnsafeBufferPointer<UInt8>) -> Int
+    func inflateTo(       sink: (UnsafeBufferPointer<UInt8>) -> Int32,
+                   From source: () -> UnsafeBufferPointer<UInt8>) -> Int
     {
         return Int(inflateBackHelper(stream,
             { let data = source(); $0[0] = data.baseAddress; return UInt32(data.count) },
@@ -38,13 +38,54 @@ private struct InflateBack
         ))
     }
     
-    func inflate(  sink: (UnsafeBufferPointer<UInt8>) -> Int32,
-                 source:  UnsafeBufferPointer<UInt8>) -> Int
+    func inflateTo(       sink: (UnsafeBufferPointer<UInt8>) -> Int32,
+                   From source:  UnsafeBufferPointer<UInt8>) -> Int
     {
         return Int(
             inflateBackHelper(stream,
                 { $0[0] = source.baseAddress; return UInt32(source.count) },
                 { sink(UnsafeBufferPointer(start: $1, count: Int($0))) }
             ))
+    }
+}
+
+class InflateRaw
+{
+    private let raw: InflateBack
+
+    init()
+    {
+        self.raw = InflateBack()
+    }
+
+    deinit
+    {
+        raw.destroy()
+    }
+
+    func inflateTo(       sink: (UnsafeBufferPointer<UInt8>) -> Int32,
+                   From source: () -> UnsafeBufferPointer<UInt8>) -> Int
+    {
+        return raw.inflateTo(sink, From: source);
+    }
+
+    func inflateTo(       sink: (UnsafeBufferPointer<UInt8>) -> Int32,
+                   From source:  UnsafeBufferPointer<UInt8>) -> Int
+    {
+        return raw.inflateTo(sink, From: source);
+    }
+
+    func inflateTo(       sink: (UnsafeBufferPointer<UInt8>) -> Int32,
+                   From source:                     [UInt8]) -> Int
+    {
+        return source.withUnsafeBufferPointer { self.inflateTo(sink, From: $0) }
+    }
+
+    func inflate(source: [UInt8]) -> ([UInt8], Int)
+    {
+        var rslt = Array<UInt8>();
+        let rc = inflateTo({ rslt.extend($0); return 0 }, From: source);
+
+        return (rslt, rc);
     }
 }
