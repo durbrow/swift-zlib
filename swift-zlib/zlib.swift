@@ -36,22 +36,26 @@ private struct InflateBack
     }
 
     func inflateTo(       sink: (UnsafeBufferPointer<UInt8>) -> Int32,
-                   From source: () -> UnsafeBufferPointer<UInt8>) -> Int
+                   From source: () -> UnsafeBufferPointer<UInt8>) -> (Int, Int)
     {
-        return Int(inflateBackHelper(stream,
+        stream[0].total_in = 0
+        let rc = Int(inflateBackHelper(stream,
             { let data = source(); $0[0] = data.baseAddress; return UInt32(data.count) },
             { sink(UnsafeBufferPointer(start: $1, count: Int($0))) }
         ))
+        return (rc, Int(stream[0].total_in))
     }
     
     func inflateTo(       sink: (UnsafeBufferPointer<UInt8>) -> Int32,
-                   From source:  UnsafeBufferPointer<UInt8>) -> Int
+                   From source:  UnsafeBufferPointer<UInt8>) -> (Int, Int)
     {
-        return Int(
+        stream[0].total_in = 0
+        let rc = Int(
             inflateBackHelper(stream,
                 { $0[0] = source.baseAddress; return UInt32(source.count) },
                 { sink(UnsafeBufferPointer(start: $1, count: Int($0))) }
             ))
+        return (rc, Int(stream[0].total_in))
     }
 }
 
@@ -70,28 +74,28 @@ class InflateRaw
     }
 
     func inflateTo(       sink: (UnsafeBufferPointer<UInt8>) -> Int32,
-                   From source: () -> UnsafeBufferPointer<UInt8>) -> Int
+                   From source: () -> UnsafeBufferPointer<UInt8>) -> (Int, Int)
     {
         return raw.inflateTo(sink, From: source);
     }
 
     func inflateTo(       sink: (UnsafeBufferPointer<UInt8>) -> Int32,
-                   From source:  UnsafeBufferPointer<UInt8>) -> Int
+                   From source:  UnsafeBufferPointer<UInt8>) -> (Int, Int)
     {
         return raw.inflateTo(sink, From: source);
     }
 
     func inflateTo(       sink: (UnsafeBufferPointer<UInt8>) -> Int32,
-                   From source:                     [UInt8]) -> Int
+                   From source:                     [UInt8]) -> (Int, Int)
     {
         return source.withUnsafeBufferPointer { self.inflateTo(sink, From: $0) }
     }
 
-    func inflate(source: [UInt8]) -> ([UInt8], Int)
+    func inflate(source: [UInt8]) -> ([UInt8], Int, Int)
     {
         var rslt = Array<UInt8>();
         let rc = inflateTo({ rslt.extend($0); return 0 }, From: source);
 
-        return (rslt, rc);
+        return (rslt, rc.0, rc.1);
     }
 }
