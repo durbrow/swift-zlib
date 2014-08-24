@@ -99,3 +99,12 @@ class InflateRaw
         return (rslt, rc.0, rc.1);
     }
 }
+
+struct zlib_header
+{
+    let compressionMethod: UInt8    // 8
+    let windowSize: UInt8           // 8...15
+    let compressionLevel: UInt8     // informational only: 0...3
+    let hasCustomDictionary: Bool   // usually false
+    let dictionaryChecksum: UInt32  // Adler-32 of custom dictionary, if any
+}
