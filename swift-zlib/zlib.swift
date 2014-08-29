@@ -39,23 +39,22 @@ private struct InflateBack
                    From source: () -> UnsafeBufferPointer<UInt8>) -> (Int, Int)
     {
         stream[0].total_in = 0
-        let rc = Int(inflateBackHelper(stream,
+        let rc = inflateBackHelper(stream,
             { let data = source(); $0[0] = data.baseAddress; return UInt32(data.count) },
             { sink(UnsafeBufferPointer(start: $1, count: Int($0))) }
-        ))
-        return (rc, Int(stream[0].total_in))
+        )
+        return (Int(rc), Int(stream[0].total_in))
     }
     
     func inflateTo(       sink: (UnsafeBufferPointer<UInt8>) -> Int32,
                    From source:  UnsafeBufferPointer<UInt8>) -> (Int, Int)
     {
         stream[0].total_in = 0
-        let rc = Int(
-            inflateBackHelper(stream,
-                { $0[0] = source.baseAddress; return UInt32(source.count) },
-                { sink(UnsafeBufferPointer(start: $1, count: Int($0))) }
-            ))
-        return (rc, Int(stream[0].total_in))
+        let rc = inflateBackHelper(stream,
+            { $0[0] = source.baseAddress; return UInt32(source.count) },
+            { sink(UnsafeBufferPointer(start: $1, count: Int($0))) }
+        )
+        return (Int(rc), Int(stream[0].total_in))
     }
 }
 
@@ -100,11 +99,38 @@ class InflateRaw
     }
 }
 
-struct zlib_header
+class InflateZlib
 {
-    let compressionMethod: UInt8    // 8
-    let windowSize: UInt8           // 8...15
-    let compressionLevel: UInt8     // informational only: 0...3
-    let hasCustomDictionary: Bool   // usually false
-    let dictionaryChecksum: UInt32  // Adler-32 of custom dictionary, if any
+    private let raw: InflateBack
+
+    init()
+    {
+        self.raw = InflateBack()
+    }
+    deinit
+    {
+        raw.dealloc()
+    }
+
+    func inflateTo(       sink: (UnsafeBufferPointer<UInt8>) -> Int32,
+                   From source: () -> UnsafeBufferPointer<UInt8>) -> (Int, Int)
+    {
+        // check zlib header
+        // see http://tools.ietf.org/html/rfc1950#page-4
+        let first  = source()
+        if first.count < 2 { return (0, 0) }
+
+        if (Int(first[0]) * 256 + Int(first[1])) % 31 != 0 { return (Int(Z_DATA_ERROR), 0) }
+
+        let CM     = first[0] & 0x0F
+        if CM != UInt8(Z_DEFLATED) { return (Int(Z_DATA_ERROR), 0) }
+
+        let CINFO  = first[0] >> 4
+        if CINFO > 7 { return (Int(Z_DATA_ERROR), 0) }
+
+        let FDICT  = first[1] & 0x20;
+        if FDICT != 0  { return (Int(Z_NEED_DICT), 0) }
+
+        return (0, 0) //raw.inflateTo(sink, From: source);
+    }
 }
